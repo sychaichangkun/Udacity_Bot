@@ -214,7 +214,7 @@
       </geometry>
     </collision>
 
-    <visual name='camera_visual'>
+    <visual name='chassis_visual'>
       <origin xyz="0.0 0 0.0" rpy=" 0 0 0"/>
       <geometry>
         <mesh filename="package://udacity_bot/meshes/hokuyo.dae"/>

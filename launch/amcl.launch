@@ -28,10 +28,10 @@
     <param name="laser_likelihood_max_dist" value="1.5"/>
     <param name="laser_z_hit" value="0.8"/>
     <param name="lazer_z_rand" value="0.2"/>
-    <param name="odom_alpha1" value="0.05"/> <!-- Lower default noise settings --> <!-- For my_udacity_bot use .005 as better results were found-->
-    <param name="odom_alpha2" value="0.05"/>
-    <param name="odom_alpha3" value="0.05"/>  <!-- Values of .15 did well as well -->
-    <param name="odom_alpha4" value="0.05"/> 
+    <param name="odom_alpha1" value="0.02"/> <!-- Lower default noise settings --> <!-- For my_udacity_bot use .005 as better results were found-->
+    <param name="odom_alpha2" value="0.02"/>
+    <param name="odom_alpha3" value="0.02"/>  <!-- Values of .15 did well as well -->
+    <param name="odom_alpha4" value="0.02"/> 
   </node>
   
     
