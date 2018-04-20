@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Map server -->
+  <arg name="map_file" default="$(find udacity_bot)/maps/jackal_race.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!-- Place map frame at odometry frame -->
+  <!--<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom 100"/>-->
+  
+  <!-- Localization-->
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <remap from="scan" to="udacity_bot/laser/scan"/>
+    <param name="odom_frame_id" value="odom"/>
+    <param name="odom_model_type" value="diff-corrected"/>
+    <param name="base_frame_id" value="robot_footprint"/>
+    <param name="global_frame_id" value="map"/>
+    <param name="min_particles" value="10"/>
+    <param name="max_particles" value="80"/> <!-- Change to 50 for udacity_bot as it provides better results-->
+    <param name="kld_err" value=".001"/>  
+    <param name="update_min_d" value="0.25"/>
+    <param name="update_min_a" value="0.25"/>
+    <param name="resample_interval" value="1"/> <!-- Higher resample rate than defualt:2 -->
+    <param name="transform_tolerance" value=".01"/> <!-- Less lag? -->             
+         <!-- Laser Parameter s-->
+    <param name="laser_max_beams" value="50"/>
+    <param name="laser_max_range" value="12"/>
+    <param name="laser_likelihood_max_dist" value="1.5"/>
+    <param name="laser_z_hit" value="0.8"/>
+    <param name="lazer_z_rand" value="0.2"/>
+    <param name="odom_alpha1" value="0.05"/> <!-- Lower default noise settings --> <!-- For my_udacity_bot use .005 as better results were found-->
+    <param name="odom_alpha2" value="0.05"/>
+    <param name="odom_alpha3" value="0.05"/>  <!-- Values of .15 did well as well -->
+    <param name="odom_alpha4" value="0.05"/> 
+  </node>
+  
+    
+      
+  <!-- Move base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find udacity_bot)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find udacity_bot)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find udacity_bot)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find udacity_bot)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find udacity_bot)/config/base_local_planner_params.yaml" command="load" />
+
+    <remap from="cmd_vel" to="cmd_vel"/>
+    <remap from="odom" to="odom"/>
+    <remap from="scan" to="udacity_bot/laser/scan"/>
+
+    <param name="base_global_planner" type="string" value="navfn/NavfnROS" />
+    <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
+
+  </node>
+
+
+</launch>
